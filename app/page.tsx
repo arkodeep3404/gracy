@@ -1,9 +1,5 @@
-import { Tiptap } from "@/components/editor";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="m-5">
-      <Tiptap />
-    </div>
-  );
+  redirect("/signup");
 }
