@@ -21,26 +21,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const origin = req.headers.get("origin") || "";
     const { email } = parsedBody;
 
-    const token = v4();
-
-    const user = await prismadb.user.update({
+    const user = await prismadb.user.findUnique({
       where: { email: email },
-      data: { token: token },
     });
 
-    if (user) {
-      await sendLoginEmail(email, user.firstName, token, origin);
-
-      return Response.json(
-        {
-          message: "please check email to login.",
-        },
-        { status: 200 }
-      );
-    } else {
+    if (!user) {
       return Response.json(
         {
           message: "no user exists with given email",
@@ -48,9 +35,26 @@ export async function POST(req: Request) {
         { status: 404 }
       );
     }
+
+    const origin = req.headers.get("origin") || "";
+    const token = v4();
+
+    await prismadb.user.update({
+      where: { email: email },
+      data: { token: token },
+    });
+
+    await sendLoginEmail(email, user.firstName, token, origin);
+
+    return Response.json(
+      {
+        message: "please check email to login.",
+      },
+      { status: 200 }
+    );
   } catch (error) {
     console.log(error);
-    
+
     return Response.json(
       {
         message: "something went wrong. please try again",

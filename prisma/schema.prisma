@@ -15,4 +15,14 @@ model User {
   token     String @unique
   firstName String
   lastName  String
+  blogs     Blog[]
+}
+
+model Blog {
+  id      String @id @default(uuid())
+  userId  String @unique
+  content String @default("")
+  user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }

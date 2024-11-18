@@ -1,5 +1,7 @@
 "use client";
 
+import { useParams } from "next/navigation";
+
 import "katex/dist/katex.min.css";
 
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -16,7 +18,24 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
+import { toast } from "sonner";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 const MenuBar = ({ editor }: { editor: any }) => {
+  const params = useParams();
+
+  async function saveBlog() {
+    const content = editor.getHTML();
+
+    const response = await axios.post("/api/edit", {
+      content: content,
+      blogId: params.blogId,
+    });
+
+    toast(response.data.message);
+  }
+
   if (!editor) {
     return null;
   }
@@ -235,11 +254,30 @@ const MenuBar = ({ editor }: { editor: any }) => {
       >
         Justify
       </Button>
+
+      <Button onClick={saveBlog}>Save Blog</Button>
     </div>
   );
 };
 
 export const Tiptap = () => {
+  const params = useParams();
+  const [blogContent, setBlogContent] = useState("");
+
+  async function getBlog() {
+    const response = await axios.get("/api/existing", {
+      headers: { blogId: params.blogId },
+    });
+
+    setBlogContent(response.data.userBlog.content);
+  }
+
+  console.log(blogContent);
+
+  useEffect(() => {
+    getBlog();
+  }, []);
+
   const editor = useEditor({
     immediatelyRender: false,
     editorProps: {
@@ -263,7 +301,7 @@ export const Tiptap = () => {
       Underline,
       Mathematics,
     ],
-    content: ``,
+    content: blogContent,
   });
 
   if (!editor) {

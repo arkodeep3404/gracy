@@ -13,25 +13,16 @@ export async function GET(req: Request) {
       );
     }
 
-    const currentUser = await prismadb.user.findUnique({
-      where: { id: userId },
+    const userBlogs = await prismadb.blog.findMany({
+      where: { userId: userId },
     });
 
-    if (currentUser) {
-      return Response.json(
-        {
-          currentUser: currentUser,
-        },
-        { status: 200 }
-      );
-    } else {
-      return Response.json(
-        {
-          message: "no user exists with given userId",
-        },
-        { status: 404 }
-      );
-    }
+    return Response.json(
+      {
+        userBlogs: userBlogs,
+      },
+      { status: 200 }
+    );
   } catch (error) {
     return Response.json(
       {
