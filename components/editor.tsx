@@ -18,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-import { toast } from "sonner";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -33,7 +32,13 @@ const MenuBar = ({ editor }: { editor: any }) => {
       blogId: params.blogId,
     });
 
-    toast(response.data.message);
+    alert(response.data.message);
+  }
+
+  async function viewBlog() {
+    const url = `/view/${params.blogId}`;
+
+    window.open(url, "_blank");
   }
 
   if (!editor) {
@@ -256,6 +261,7 @@ const MenuBar = ({ editor }: { editor: any }) => {
       </Button>
 
       <Button onClick={saveBlog}>Save Blog</Button>
+      <Button onClick={viewBlog}>View Blog</Button>
     </div>
   );
 };
@@ -271,8 +277,6 @@ export const Tiptap = () => {
 
     setBlogContent(response.data.userBlog.content);
   }
-
-  console.log(blogContent);
 
   useEffect(() => {
     getBlog();
@@ -303,6 +307,12 @@ export const Tiptap = () => {
     ],
     content: blogContent,
   });
+
+  useEffect(() => {
+    if (editor && blogContent !== "") {
+      editor.commands.setContent(blogContent);
+    }
+  }, [blogContent, editor]);
 
   if (!editor) {
     return null;

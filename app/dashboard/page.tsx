@@ -46,10 +46,10 @@ export default function Dashboard() {
             <div key={item.id} className="h-36 w-36">
               <Link href={`/dashboard/edit/${item.id}`} key={item.id}>
                 <div
-                  className="h-36 w-36 border border-black rounded-lg"
+                  className="h-36 w-36 border border-black rounded-lg break-all"
                   key={item.id}
                 >
-                  {item.content.slice(0, 50)}
+                  {item.content.slice(0, 75)}
                 </div>
               </Link>
             </div>
