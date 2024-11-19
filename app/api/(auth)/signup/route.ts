@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         {
           message: "incorrect inputs",
         },
-        { status: 411 },
+        { status: 411 }
       );
     }
 
@@ -35,13 +35,13 @@ export async function POST(req: Request) {
         {
           message: "email already exists",
         },
-        { status: 411 },
+        { status: 411 }
       );
     }
 
     const token = v4();
 
-    const newUser = await prismadb.user.create({
+    await prismadb.user.create({
       data: {
         email: email,
         firstName: firstName,
@@ -56,14 +56,15 @@ export async function POST(req: Request) {
       {
         message: "user created. please check email to login.",
       },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error) {
     return Response.json(
       {
         message: "something went wrong. please try again",
+        error: error
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

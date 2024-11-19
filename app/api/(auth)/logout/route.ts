@@ -6,7 +6,8 @@ export async function POST(req: Request) {
   return Response.json(
     {
       message: "cookie deleted successfully",
+      req: req,
     },
-    { status: 200 },
+    { status: 200 }
   );
 }

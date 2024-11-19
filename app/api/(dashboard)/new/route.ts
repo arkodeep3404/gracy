@@ -30,6 +30,7 @@ export async function POST(req: Request) {
     return Response.json(
       {
         message: "something went wrong. please try again",
+        error: error,
       },
       { status: 500 }
     );

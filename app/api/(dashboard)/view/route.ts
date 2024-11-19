@@ -27,10 +27,11 @@ export async function GET(req: Request) {
     return Response.json(
       {
         message: "something went wrong. please try again",
+        error: error,
       },
       { status: 500 }
     );
   }
 }
 
-export async function POST(req: Request) {}
+export async function POST() {}
