@@ -40,8 +40,8 @@ export default function ViewBlog() {
 
   return (
     <div>
-      <div className="p-10 prose">
-        <div dangerouslySetInnerHTML={{ __html: blog }}></div>
+      <div className="prose max-w-none flex items-center justify-center">
+        <div dangerouslySetInnerHTML={{ __html: blog }} />
       </div>
     </div>
   );
