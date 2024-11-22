@@ -41,7 +41,7 @@ export default function Dashboard() {
           <Button onClick={createNew}> Create New </Button>
           <Button onClick={logout}> Logout </Button>
         </div>
-        <div className="p-5">
+        <div className="p-10 flex gap-10 flex-wrap">
           {blog.map((item: any) => (
             <div key={item.id} className="h-36 w-36">
               <Link href={`/dashboard/edit/${item.id}`} key={item.id}>
